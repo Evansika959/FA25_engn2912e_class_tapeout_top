@@ -13,40 +13,24 @@ module chip_top #(
     // Signal pads
     parameter NUM_INPUT_PADS = `NUM_INPUT_PADS,
     parameter NUM_BIDIR_PADS = `NUM_BIDIR_PADS,
-    parameter NUM_ANALOG_PADS = `NUM_ANALOG_PADS,
-    parameter NUM_UNUSED_PADS = `NUM_UNUSED_PADS
+    parameter NUM_ANALOG_PADS = `NUM_ANALOG_PADS
     )(
     `ifdef USE_POWER_PINS
     inout  wire VDD,
     inout  wire VSS,
     `endif
 
-    inout  wire clk1_PAD,
-    inout  wire rst_n1_PAD,
-
-    inout  wire clk2_PAD,
-    inout  wire rst_n2_PAD,
-
-    inout  wire clk3_PAD,
-    inout  wire clk3_b_PAD,
-    inout  wire rst_n3_PAD,
+    inout  wire clk_PAD,
+    inout  wire rst_n_PAD,
     
     inout  wire [NUM_INPUT_PADS-1:0] input_PAD,
     inout  wire [NUM_BIDIR_PADS-1:0] bidir_PAD,
-    inout  wire [NUM_UNUSED_PADS-1:0] unused_PAD,
     
     inout  wire [NUM_ANALOG_PADS-1:0] analog_PAD
 );
 
-    wire clk1_PAD2CORE;
-    wire rst_n1_PAD2CORE;
-
-    wire clk2_PAD2CORE;
-    wire rst_n2_PAD2CORE;
-
-    wire clk3_PAD2CORE;
-    wire clk3_b_PAD2CORE;
-    wire rst_n3_PAD2CORE;
+    wire clk_PAD2CORE;
+    wire rst_n_PAD2CORE;
     
     wire [NUM_INPUT_PADS-1:0] input_PAD2CORE;
     wire [NUM_INPUT_PADS-1:0] input_CORE2PAD_PU;
@@ -60,10 +44,6 @@ module chip_top #(
     wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_IE;
     wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_PU;
     wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_PD;
-
-    wire [NUM_UNUSED_PADS-1:0] _unused_PAD2CORE;
-    wire [NUM_UNUSED_PADS-1:0] _unused_PAD;
-
 
     // Power/ground pad instances
     generate
@@ -93,7 +73,7 @@ module chip_top #(
     // Signal IO pad instances
 
     // Schmitt trigger
-    gf180mcu_fd_io__in_s clk1_pad (
+    gf180mcu_fd_io__in_s clk_pad (
         `ifdef USE_POWER_PINS
         .DVDD   (VDD),
         .DVSS   (VSS),
@@ -101,60 +81,15 @@ module chip_top #(
         .VSS    (VSS),
         `endif
     
-        .Y      (clk1_PAD2CORE),
-        .PAD    (clk1_PAD),
-        
-        .PU     (1'b0),
-        .PD     (1'b0)
-    );
-
-    gf180mcu_fd_io__in_s clk2_pad (
-        `ifdef USE_POWER_PINS
-        .DVDD   (VDD),
-        .DVSS   (VSS),
-        .VDD    (VDD),
-        .VSS    (VSS),
-        `endif
-    
-        .Y      (clk2_PAD2CORE),
-        .PAD    (clk2_PAD),
-        
-        .PU     (1'b0),
-        .PD     (1'b0)
-    );
-
-    gf180mcu_fd_io__in_s clk3_pad (
-        `ifdef USE_POWER_PINS
-        .DVDD   (VDD),
-        .DVSS   (VSS),
-        .VDD    (VDD),
-        .VSS    (VSS),
-        `endif
-    
-        .Y      (clk1_PAD2CORE),
-        .PAD    (clk1_PAD),
-        
-        .PU     (1'b0),
-        .PD     (1'b0)
-    );
-
-    gf180mcu_fd_io__in_s clk3_b_pad (
-        `ifdef USE_POWER_PINS
-        .DVDD   (VDD),
-        .DVSS   (VSS),
-        .VDD    (VDD),
-        .VSS    (VSS),
-        `endif
-    
-        .Y      (clk3_b_PAD2CORE),
-        .PAD    (clk3_b_PAD),
+        .Y      (clk_PAD2CORE),
+        .PAD    (clk_PAD),
         
         .PU     (1'b0),
         .PD     (1'b0)
     );
     
     // Normal input
-    gf180mcu_fd_io__in_c rst_n1_pad (
+    gf180mcu_fd_io__in_c rst_n_pad (
         `ifdef USE_POWER_PINS
         .DVDD   (VDD),
         .DVSS   (VSS),
@@ -162,38 +97,8 @@ module chip_top #(
         .VSS    (VSS),
         `endif
     
-        .Y      (rst_n1_PAD2CORE),
-        .PAD    (rst_n1_PAD),
-        
-        .PU     (1'b0),
-        .PD     (1'b0)
-    );
-
-    gf180mcu_fd_io__in_c rst_n2_pad (
-        `ifdef USE_POWER_PINS
-        .DVDD   (VDD),
-        .DVSS   (VSS),
-        .VDD    (VDD),
-        .VSS    (VSS),
-        `endif
-    
-        .Y      (rst_n2_PAD2CORE),
-        .PAD    (rst_n2_PAD),
-        
-        .PU     (1'b0),
-        .PD     (1'b0)
-    );
-
-    gf180mcu_fd_io__in_c rst_n3_pad (
-        `ifdef USE_POWER_PINS
-        .DVDD   (VDD),
-        .DVSS   (VSS),
-        .VDD    (VDD),
-        .VSS    (VSS),
-        `endif
-    
-        .Y      (rst_n3_PAD2CORE),
-        .PAD    (rst_n3_PAD),
+        .Y      (rst_n_PAD2CORE),
+        .PAD    (rst_n_PAD),
         
         .PU     (1'b0),
         .PD     (1'b0)
@@ -215,26 +120,6 @@ module chip_top #(
             
             .PU     (input_CORE2PAD_PU[i]),
             .PD     (input_CORE2PAD_PD[i])
-        );
-    end
-    endgenerate
-
-    generate
-    for (genvar i=0; i<NUM_UNUSED_PADS; i++) begin : unused_inputs
-        (* keep *)
-        gf180mcu_fd_io__in_c pad (
-            `ifdef USE_POWER_PINS
-            .DVDD   (VDD),
-            .DVSS   (VSS),
-            .VDD    (VDD),
-            .VSS    (VSS),
-            `endif
-        
-            .Y      (_unused_PAD2CORE[i]),
-            .PAD    (_unused_PAD[i]),
-            
-            .PU     (1'b0),
-            .PD     (1'b1)
         );
     end
     endgenerate

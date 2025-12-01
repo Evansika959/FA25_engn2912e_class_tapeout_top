@@ -52,6 +52,9 @@ module chip_top #(
     wire [NUM_INPUT_PADS-1:0] input_CORE2PAD_PU;
     wire [NUM_INPUT_PADS-1:0] input_CORE2PAD_PD;
 
+    assign input_CORE2PAD_PU = '0;
+    assign input_CORE2PAD_PD = '0;
+
     wire [NUM_BIDIR_PADS-1:0] bidir_PAD2CORE;
     wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD;
     wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_OE;
@@ -61,8 +64,15 @@ module chip_top #(
     wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_PU;
     wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_PD;
 
+    assign bidir_CORE2PAD = '0;
+    assign bidir_CORE2PAD_OE = '1;
+    assign bidir_CORE2PAD_CS = '0;
+    assign bidir_CORE2PAD_SL = '0;
+    assign bidir_CORE2PAD_IE = '0;
+    assign bidir_CORE2PAD_PU = '0;
+    assign bidir_CORE2PAD_PD = '0;
+
     wire [NUM_UNUSED_PADS-1:0] _unused_PAD2CORE;
-    wire [NUM_UNUSED_PADS-1:0] _unused_PAD;
 
 
     // Power/ground pad instances
@@ -93,6 +103,7 @@ module chip_top #(
     // Signal IO pad instances
 
     // Schmitt trigger
+    (* keep *)
     gf180mcu_fd_io__in_s clk1_pad (
         `ifdef USE_POWER_PINS
         .DVDD   (VDD),
@@ -108,6 +119,7 @@ module chip_top #(
         .PD     (1'b0)
     );
 
+    (* keep *)
     gf180mcu_fd_io__in_s clk2_pad (
         `ifdef USE_POWER_PINS
         .DVDD   (VDD),
@@ -123,6 +135,7 @@ module chip_top #(
         .PD     (1'b0)
     );
 
+    (* keep *)
     gf180mcu_fd_io__in_s clk3_pad (
         `ifdef USE_POWER_PINS
         .DVDD   (VDD),
@@ -130,14 +143,15 @@ module chip_top #(
         .VDD    (VDD),
         .VSS    (VSS),
         `endif
-    
-        .Y      (clk1_PAD2CORE),
-        .PAD    (clk1_PAD),
+
+        .Y      (clk3_PAD2CORE),
+        .PAD    (clk3_PAD),
         
         .PU     (1'b0),
         .PD     (1'b0)
     );
 
+    (* keep *)
     gf180mcu_fd_io__in_s clk3_b_pad (
         `ifdef USE_POWER_PINS
         .DVDD   (VDD),
@@ -154,6 +168,7 @@ module chip_top #(
     );
     
     // Normal input
+    (* keep *)
     gf180mcu_fd_io__in_c rst_n1_pad (
         `ifdef USE_POWER_PINS
         .DVDD   (VDD),
@@ -169,6 +184,7 @@ module chip_top #(
         .PD     (1'b0)
     );
 
+    (* keep *)
     gf180mcu_fd_io__in_c rst_n2_pad (
         `ifdef USE_POWER_PINS
         .DVDD   (VDD),
@@ -184,6 +200,7 @@ module chip_top #(
         .PD     (1'b0)
     );
 
+    (* keep *)
     gf180mcu_fd_io__in_c rst_n3_pad (
         `ifdef USE_POWER_PINS
         .DVDD   (VDD),
@@ -220,7 +237,7 @@ module chip_top #(
     endgenerate
 
     generate
-    for (genvar i=0; i<NUM_UNUSED_PADS; i++) begin : unused_inputs
+    for (genvar i=0; i<NUM_UNUSED_PADS; i++) begin : unused
         (* keep *)
         gf180mcu_fd_io__in_c pad (
             `ifdef USE_POWER_PINS
@@ -231,7 +248,7 @@ module chip_top #(
             `endif
         
             .Y      (_unused_PAD2CORE[i]),
-            .PAD    (_unused_PAD[i]),
+            .PAD    (unused_PAD[i]),
             
             .PU     (1'b0),
             .PD     (1'b1)
@@ -282,34 +299,41 @@ module chip_top #(
 
     // Core design
 
-    chip_core #(
-        .NUM_INPUT_PADS  (NUM_INPUT_PADS),
-        .NUM_BIDIR_PADS  (NUM_BIDIR_PADS),
-        .NUM_ANALOG_PADS (NUM_ANALOG_PADS)
-    ) i_chip_core (
-        `ifdef USE_POWER_PINS
-        .VDD        (VDD),
-        .VSS        (VSS),
-        `endif
+    // chip_core #(
+    //     .NUM_INPUT_PADS  (NUM_INPUT_PADS),
+    //     .NUM_BIDIR_PADS  (NUM_BIDIR_PADS),
+    //     .NUM_ANALOG_PADS (NUM_ANALOG_PADS)
+    // ) i_chip_core (
+    //     `ifdef USE_POWER_PINS
+    //     .VDD        (VDD),
+    //     .VSS        (VSS),
+    //     `endif
     
-        .clk        (clk_PAD2CORE),
-        .rst_n      (rst_n_PAD2CORE),
-    
-        .input_in   (input_PAD2CORE),
-        .input_pu   (input_CORE2PAD_PU),
-        .input_pd   (input_CORE2PAD_PD),
+    //     .clk1        (clk1_PAD2CORE),
+    //     .rst_n1      (rst_n1_PAD2CORE),
 
-        .bidir_in   (bidir_PAD2CORE),
-        .bidir_out  (bidir_CORE2PAD),
-        .bidir_oe   (bidir_CORE2PAD_OE),
-        .bidir_cs   (bidir_CORE2PAD_CS),
-        .bidir_sl   (bidir_CORE2PAD_SL),
-        .bidir_ie   (bidir_CORE2PAD_IE),
-        .bidir_pu   (bidir_CORE2PAD_PU),
-        .bidir_pd   (bidir_CORE2PAD_PD),
+    //     .clk2        (clk2_PAD2CORE),
+    //     .rst_n2      (rst_n2_PAD2CORE),
+
+    //     .clk3        (clk3_PAD2CORE),
+    //     .clk3_b      (clk3_b_PAD2CORE),
+    //     .rst_n3      (rst_n3_PAD2CORE),
+    
+    //     .input_in   (input_PAD2CORE),
+    //     .input_pu   (input_CORE2PAD_PU),
+    //     .input_pd   (input_CORE2PAD_PD),
+
+    //     .bidir_in   (bidir_PAD2CORE),
+    //     .bidir_out  (bidir_CORE2PAD),
+    //     .bidir_oe   (bidir_CORE2PAD_OE),
+    //     .bidir_cs   (bidir_CORE2PAD_CS),
+    //     .bidir_sl   (bidir_CORE2PAD_SL),
+    //     .bidir_ie   (bidir_CORE2PAD_IE),
+    //     .bidir_pu   (bidir_CORE2PAD_PU),
+    //     .bidir_pd   (bidir_CORE2PAD_PD),
         
-        .analog     (analog_PAD)
-    );
+    //     .analog     (analog_PAD)
+    // );
     
     // Chip ID - do not remove, necessary for tapeout
     (* keep *)

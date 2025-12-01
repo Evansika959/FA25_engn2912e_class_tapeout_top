@@ -27,7 +27,9 @@ meta:
 DESIGN_NAME: chip_top
 VERILOG_FILES:
 - dir::../src/chip_top.sv
-- dir::../src/chip_core.sv
+# - dir::../src/chip_core.sv
+
+VERILOG_POWER_DEFINE: USE_POWER_PINS
 
 # Enable plugin for better SystemVerilog support
 # USE_SLANG: True
@@ -36,9 +38,121 @@ VERILOG_FILES:
 PRIMARY_GDSII_STREAMOUT_TOOL: klayout
 
 # SDC files
-PNR_SDC_FILE: dir::chip_top.sdc
-SIGNOFF_SDC_FILE: dir::chip_top.sdc
-FALLBACK_SDC: dir::chip_top.sdc
+# PNR_SDC_FILE: dir::chip_top.sdc
+# SIGNOFF_SDC_FILE: dir::chip_top.sdc
+# FALLBACK_SDC: dir::chip_top.sdc
+
+# Floorplanning
+FP_SIZING: absolute
+# 3880umx5070um including 26um
+# for the sealring on all sides
+DIE_AREA: [0, 0, 3932, 5122]
+CORE_AREA: [442, 442, 3490, 4680]
+
+VERILOG_DEFINES: ["SLOT_1X1"]
+
+# Specify the pad instances for the padring
+PAD_SOUTH: [
+    clk2_pad,
+    rst_n2_pad,
+
+    "bidir\\[0\\].pad",
+    "bidir\\[1\\].pad",
+    "bidir\\[2\\].pad",
+    "bidir\\[3\\].pad",
+    "bidir\\[4\\].pad",
+    "bidir\\[5\\].pad",
+
+    "dvss_pads\\[0\\].pad",
+
+    "bidir\\[6\\].pad",
+    "bidir\\[7\\].pad",
+    "inputs\\[0\\].pad",
+    "unused\\[0\\].pad",
+    "unused\\[1\\].pad",
+    "analog\\[0\\].pad",
+    "analog\\[1\\].pad",
+    "analog\\[2\\].pad"
+]
+
+PAD_EAST: [
+    "dvdd_pads\\[0\\].pad",
+    "dvss_pads\\[1\\].pad",
+
+    "unused\\[2\\].pad",
+    "unused\\[3\\].pad",
+    "unused\\[4\\].pad",
+    "unused\\[5\\].pad",
+    "unused\\[6\\].pad",
+    "unused\\[7\\].pad",
+    
+    "dvdd_pads\\[1\\].pad",
+    "dvss_pads\\[2\\].pad",
+
+    
+    "bidir\\[8\\].pad",
+    "bidir\\[9\\].pad",
+    "inputs\\[1\\].pad",
+    "inputs\\[2\\].pad",
+    "inputs\\[3\\].pad",
+    "bidir\\[10\\].pad",
+    
+    "dvss_pads\\[3\\].pad",
+    "dvdd_pads\\[2\\].pad",
+    "dvss_pads\\[4\\].pad",
+    "dvdd_pads\\[3\\].pad",
+]
+
+PAD_NORTH: [
+    "analog\\[3\\].pad",
+    "analog\\[4\\].pad",
+    "analog\\[5\\].pad",
+    "analog\\[6\\].pad",
+    "unused\\[8\\].pad",
+    "unused\\[9\\].pad",
+    "unused\\[10\\].pad",
+    "unused\\[11\\].pad",
+
+    "dvss_pads\\[5\\].pad",
+
+    "unused\\[12\\].pad",
+    "unused\\[13\\].pad",
+    "unused\\[14\\].pad",
+    "unused\\[15\\].pad",
+    "unused\\[16\\].pad",
+    rst_n3_pad,
+    clk3_pad,
+    clk3_b_pad
+]
+
+
+PAD_WEST: [
+    "dvdd_pads\\[7\\].pad",
+    "dvss_pads\\[9\\].pad",
+    "dvdd_pads\\[6\\].pad",
+    "dvss_pads\\[8\\].pad",
+
+    "unused\\[17\\].pad",
+    "unused\\[18\\].pad",
+    "unused\\[19\\].pad",
+    "unused\\[20\\].pad",
+    "unused\\[21\\].pad",
+    "unused\\[22\\].pad",
+
+    "dvdd_pads\\[5\\].pad",
+    "dvss_pads\\[7\\].pad",
+
+    "bidir\\[11\\].pad",
+    "inputs\\[4\\].pad",
+    "inputs\\[5\\].pad",
+    "inputs\\[6\\].pad",
+
+    "dvdd_pads\\[4\\].pad",
+    "dvss_pads\\[6\\].pad",
+    
+    clk1_pad,
+    rst_n1_pad
+]
 
 # Power / ground nets
 VDD_NETS:
@@ -164,34 +278,34 @@ MACROS:
         location: ["expr::$DIE_AREA[2] + -169.25", "expr::$DIE_AREA[3] + -169.25"]
         orientation: N
 
-  gf180mcu_fd_ip_sram__sram512x8m8wm1:
-    gds:
-      - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/gds/gf180mcu_fd_ip_sram__sram512x8m8wm1.gds
-    lef:
-      - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lef/gf180mcu_fd_ip_sram__sram512x8m8wm1.lef
-    vh:
-      - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/verilog/gf180mcu_fd_ip_sram__sram512x8m8wm1__blackbox.v
-    lib:
-      "*_tt_025C_5v00":
-        - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram512x8m8wm1__tt_025C_5v00.lib
-      "*_ff_n40C_5v50":
-        - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram512x8m8wm1__ff_n40C_5v50.lib
-      "*_ss_125C_4v50":
-        - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram512x8m8wm1__ss_125C_4v50.lib
-    instances:
-      # Make sure to specify the SRAMs in pdn_cfg.tcl
-      i_chip_core.sram_0:
-        location: [490, 500]
-        orientation: N
-      i_chip_core.sram_1:
-        location: [970, 500]
-        orientation: E
+  # gf180mcu_fd_ip_sram__sram512x8m8wm1:
+  #   gds:
+  #     - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/gds/gf180mcu_fd_ip_sram__sram512x8m8wm1.gds
+  #   lef:
+  #     - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lef/gf180mcu_fd_ip_sram__sram512x8m8wm1.lef
+  #   vh:
+  #     - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/verilog/gf180mcu_fd_ip_sram__sram512x8m8wm1__blackbox.v
+  #   lib:
+  #     "*_tt_025C_5v00":
+  #       - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram512x8m8wm1__tt_025C_5v00.lib
+  #     "*_ff_n40C_5v50":
+  #       - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram512x8m8wm1__ff_n40C_5v50.lib
+  #     "*_ss_125C_4v50":
+  #       - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram512x8m8wm1__ss_125C_4v50.lib
+  #   instances:
+  #     # Make sure to specify the SRAMs in pdn_cfg.tcl
+  #     i_chip_core.sram_0:
+  #       location: [490, 500]
+  #       orientation: N
+  #     i_chip_core.sram_1:
+  #       location: [970, 500]
+  #       orientation: E
 
 # This is an alternative method compared to
 # specifying the power connections in the RTL
-PDN_MACRO_CONNECTIONS:
-- "i_chip_core.sram_0 VDD VSS VDD VSS"
-- "i_chip_core.sram_1 VDD VSS VDD VSS"
+# PDN_MACRO_CONNECTIONS:
+# - "i_chip_core.sram_0 VDD VSS VDD VSS"
+# - "i_chip_core.sram_1 VDD VSS VDD VSS"
 
 # Halo size around macros while cutting rows.
 # Workaround for: https://github.com/The-OpenROAD-Project/OpenROAD/issues/8868
@@ -200,7 +314,7 @@ FP_MACRO_VERTICAL_HALO: 10
 FP_PDN_HORIZONTAL_HALO: 5
 FP_PDN_VERTICAL_HALO: 5
 
-PDN_CFG: dir::pdn_cfg.tcl
+# PDN_CFG: dir::pdn_cfg.tcl
 
 # Make sure netgen doesn't create 'no_connect' nets
 # Not needed since netgen 1.5.303
@@ -213,3 +327,5 @@ LVS_FLATTEN_CELLS:
 MAGIC_EXT_ABSTRACT_CELLS:
 - gf180mcu_ws_ip__id
 - gf180mcu_ws_ip__logo
+
+

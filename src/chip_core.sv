@@ -13,8 +13,15 @@ module chip_core #(
     inout  wire VSS,
     `endif
     
-    input  wire clk,       // clock
-    input  wire rst_n,     // reset (active low)
+    input  wire clk1,       // clock
+    input  wire rst_n1,     // reset (active low)
+
+    input  wire clk2,       // clock
+    input  wire rst_n2,     // reset (active low)
+
+    input  wire clk3,       // clock
+    input  wire clk3_b,     // clock (backward path)
+    input  wire rst_n3,     // reset (active low)
     
     input  wire [NUM_INPUT_PADS-1:0] input_in,   // Input value
     output wire [NUM_INPUT_PADS-1:0] input_pu,   // Pull-up
@@ -49,14 +56,26 @@ module chip_core #(
     logic _unused;
     assign _unused = &bidir_in;
 
-    logic [NUM_BIDIR_PADS-1:0] count;
+    logic [NUM_BIDIR_PADS-4-1:0] count;
+    logic [4-1:0] count2;
 
-    always_ff @(posedge clk) begin
-        if (!rst_n) begin
+
+    always_ff @(posedge clk1) begin
+        if (!rst_n1 | !rst_n2 | !rst_n3) begin
             count <= '0;
         end else begin
             if (&input_in) begin
                 count <= count + 1;
+            end
+        end
+    end
+
+    always_ff @(posedge clk3_b) begin
+        if (!rst_n1 | !rst_n2 | !rst_n3) begin
+            count2 <= '0;
+        end else begin
+            if (&input_in) begin
+                count2 <= count2 + 1;
             end
         end
     end
@@ -69,7 +88,7 @@ module chip_core #(
         .VSS  (VSS),
         `endif
 
-        .CLK  (clk),
+        .CLK  (clk3),
         .CEN  (1'b1),
         .GWEN (1'b0),
         .WEN  (8'b0),
@@ -86,7 +105,7 @@ module chip_core #(
         .VSS  (VSS),
         `endif
 
-        .CLK  (clk),
+        .CLK  (clk2),
         .CEN  (1'b1),
         .GWEN (1'b0),
         .WEN  (8'b0),
@@ -95,7 +114,7 @@ module chip_core #(
         .Q    (sram_1_out)
     );
 
-    assign bidir_out = count ^ {24'd0, sram_0_out, sram_1_out};
+    assign bidir_out = {count,count2} ^ {4'd0, sram_1_out|sram_0_out};
 
 endmodule
 

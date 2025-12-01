@@ -168,9 +168,9 @@ IGNORE_DISCONNECTED_MODULES:
 - gf180mcu_ws_ip__logo
 
 # Clock
-CLOCK_PORT: clk_PAD
-CLOCK_NET: clk_pad/Y
-CLOCK_PERIOD: 40 # 25 MHz
+# CLOCK_PORT: clk_PAD
+# CLOCK_NET: clk_pad/Y
+# CLOCK_PERIOD: 40 # 25 MHz
 
 # Fix hold violations
 PL_RESIZER_HOLD_SLACK_MARGIN: 0.35

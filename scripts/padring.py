@@ -25,6 +25,7 @@ from librelane.steps import (
     OpenROAD,
     Odb,
     Step,
+    Netgen,
     ViewsUpdate,
     MetricsUpdate,
     StepError,
@@ -58,6 +59,10 @@ class PadringFlow(SequentialFlow):
         KLayout.StreamOut,
         KLayout.XOR,
         Checker.XOR,
+        Magic.DRC,
+        KLayout.DRC,
+        Netgen.LVS,
+        Checker.LVS,
         KLayout.SealRing,
     ]
 

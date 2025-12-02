@@ -61,6 +61,8 @@ class PadringFlow(SequentialFlow):
         Checker.XOR,
         Magic.DRC,
         KLayout.DRC,
+        Magic.SpiceExtraction,
+        Checker.IllegalOverlap,
         Netgen.LVS,
         Checker.LVS,
         KLayout.SealRing,

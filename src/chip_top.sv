@@ -49,28 +49,31 @@ module chip_top #(
     wire rst_n3_PAD2CORE;
     
     wire [NUM_INPUT_PADS-1:0] input_PAD2CORE;
-    wire [NUM_INPUT_PADS-1:0] input_CORE2PAD_PU;
-    wire [NUM_INPUT_PADS-1:0] input_CORE2PAD_PD;
+    // wire [NUM_INPUT_PADS-1:0] input_CORE2PAD_PU;
+    // wire [NUM_INPUT_PADS-1:0] input_CORE2PAD_PD;
 
-    assign input_CORE2PAD_PU = '0;
-    assign input_CORE2PAD_PD = '0;
+    // assign input_CORE2PAD_PU = '0;
+    // assign input_CORE2PAD_PD = '0;
 
     wire [NUM_BIDIR_PADS-1:0] bidir_PAD2CORE;
-    wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD;
-    wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_OE;
-    wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_CS;
-    wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_SL;
-    wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_IE;
-    wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_PU;
-    wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_PD;
+    // wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD;
+    // wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_OE;
+    // wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_CS;
+    // wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_SL;
+    // wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_IE;
+    // wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_PU;
+    // wire [NUM_BIDIR_PADS-1:0] bidir_CORE2PAD_PD;
 
-    assign bidir_CORE2PAD = '0;
-    assign bidir_CORE2PAD_OE = '1;
-    assign bidir_CORE2PAD_CS = '0;
-    assign bidir_CORE2PAD_SL = '0;
-    assign bidir_CORE2PAD_IE = '0;
-    assign bidir_CORE2PAD_PU = '0;
-    assign bidir_CORE2PAD_PD = '0;
+    // assign bidir_CORE2PAD = '0;
+    // assign bidir_CORE2PAD_OE = '1;
+    // assign bidir_CORE2PAD_CS = '0;
+    // assign bidir_CORE2PAD_SL = '0;
+    // assign bidir_CORE2PAD_IE = '0;
+    // assign bidir_CORE2PAD_PU = '0;
+    // assign bidir_CORE2PAD_PD = '0;
+
+    // assign  = 1'b0;
+    // assign  = 1'b1;
 
     wire [NUM_UNUSED_PADS-1:0] _unused_PAD2CORE;
 
@@ -115,8 +118,8 @@ module chip_top #(
         .Y      (clk1_PAD2CORE),
         .PAD    (clk1_PAD),
         
-        .PU     (1'b0),
-        .PD     (1'b0)
+        .PU     (),
+        .PD     ()
     );
 
     (* keep *)
@@ -131,8 +134,8 @@ module chip_top #(
         .Y      (clk2_PAD2CORE),
         .PAD    (clk2_PAD),
         
-        .PU     (1'b0),
-        .PD     (1'b0)
+        .PU     (),
+        .PD     ()
     );
 
     (* keep *)
@@ -147,8 +150,8 @@ module chip_top #(
         .Y      (clk3_PAD2CORE),
         .PAD    (clk3_PAD),
         
-        .PU     (1'b0),
-        .PD     (1'b0)
+        .PU     (),
+        .PD     ()
     );
 
     (* keep *)
@@ -163,8 +166,8 @@ module chip_top #(
         .Y      (clk3_b_PAD2CORE),
         .PAD    (clk3_b_PAD),
         
-        .PU     (1'b0),
-        .PD     (1'b0)
+        .PU     (),
+        .PD     ()
     );
     
     // Normal input
@@ -180,8 +183,8 @@ module chip_top #(
         .Y      (rst_n1_PAD2CORE),
         .PAD    (rst_n1_PAD),
         
-        .PU     (1'b0),
-        .PD     (1'b0)
+        .PU     (),
+        .PD     ()
     );
 
     (* keep *)
@@ -196,8 +199,8 @@ module chip_top #(
         .Y      (rst_n2_PAD2CORE),
         .PAD    (rst_n2_PAD),
         
-        .PU     (1'b0),
-        .PD     (1'b0)
+        .PU     (),
+        .PD     ()
     );
 
     (* keep *)
@@ -212,8 +215,8 @@ module chip_top #(
         .Y      (rst_n3_PAD2CORE),
         .PAD    (rst_n3_PAD),
         
-        .PU     (1'b0),
-        .PD     (1'b0)
+        .PU     (),
+        .PD     ()
     );
 
     generate
@@ -230,8 +233,8 @@ module chip_top #(
             .Y      (input_PAD2CORE[i]),
             .PAD    (input_PAD[i]),
             
-            .PU     (input_CORE2PAD_PU[i]),
-            .PD     (input_CORE2PAD_PD[i])
+            .PU     (),
+            .PD     ()
         );
     end
     endgenerate
@@ -250,8 +253,10 @@ module chip_top #(
             .Y      (_unused_PAD2CORE[i]),
             .PAD    (unused_PAD[i]),
             
-            .PU     (1'b0),
-            .PD     (1'b1)
+            // .PU     (VSS),
+            // .PD     (VDD)
+            .PU     (),
+            .PD     ()
         );
     end
     endgenerate
@@ -267,17 +272,17 @@ module chip_top #(
             .VSS    (VSS),
             `endif
         
-            .A      (bidir_CORE2PAD[i]),
-            .OE     (bidir_CORE2PAD_OE[i]),
+            .A      (),
+            .OE     (),
             .Y      (bidir_PAD2CORE[i]),
             .PAD    (bidir_PAD[i]),
             
-            .CS     (bidir_CORE2PAD_CS[i]),
-            .SL     (bidir_CORE2PAD_SL[i]),
-            .IE     (bidir_CORE2PAD_IE[i]),
+            .CS     (),
+            .SL     (),
+            .IE     (),
 
-            .PU     (bidir_CORE2PAD_PU[i]),
-            .PD     (bidir_CORE2PAD_PD[i])
+            .PU     (),
+            .PD     ()
         );
     end
     endgenerate

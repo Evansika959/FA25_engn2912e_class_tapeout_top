@@ -1,4 +1,5 @@
 `define NUM_UNUSED_PADS 23
+`define USE_POWER_PINS
 
 `ifdef SLOT_1X1
 

@@ -39,7 +39,7 @@ clone-pdk: ## Clone the GF180MCU PDK repository
 .PHONY: clone-pdk
 
 librelane: ## Run LibreLane flow (synthesis, PnR, verification)
-	librelane librelane/slots/slot_${SLOT}.yaml librelane/config.yaml --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk
+	librelane librelane/config.yaml --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk
 .PHONY: librelane
 
 librelane-nodrc: ## Run LibreLane flow without DRC checks
@@ -53,6 +53,12 @@ librelane-klayoutdrc: ## Run LibreLane flow without magic DRC checks
 librelane-magicdrc: ## Run LibreLane flow without KLayout DRC checks
 	librelane librelane/slots/slot_${SLOT}.yaml librelane/config.yaml --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk --skip KLayout.DRC
 .PHONY: librelane-magicdrc
+
+librelane-fast: ## Run LibreLane flow without DRC checks
+	librelane librelane/config.yaml --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk \
+	 --skip KLayout.DRC --skip Magic.DRC --skip OpenROAD.FillInsertion --skip Klayout.Filler --skip Klayout.Density \
+	 --skip KLayout.Xor --skip Checker.Xor
+.PHONY: librelane-nodrc
 
 librelane-openroad: ## Open the last run in OpenROAD
 	librelane librelane/slots/slot_${SLOT}.yaml librelane/config.yaml --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk --last-run --flow OpenInOpenROAD

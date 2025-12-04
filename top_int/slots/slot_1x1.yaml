@@ -1,0 +1,111 @@
+# Floorplanning
+FP_SIZING: absolute
+# 3880umx5070um including 26um
+# for the sealring on all sides
+DIE_AREA: [0, 0, 3932, 5122]
+CORE_AREA: [442, 442, 3490, 4680]
+
+VERILOG_DEFINES: ["SLOT_1X1"]
+
+# Specify the pad instances for the padring
+PAD_SOUTH: [
+    clk2_pad,
+    rst_n2_pad,
+
+    "bidir\\[0\\].pad",
+    "bidir\\[1\\].pad",
+    "bidir\\[2\\].pad",
+    "bidir\\[3\\].pad",
+    "bidir\\[4\\].pad",
+    "bidir\\[5\\].pad",
+
+    "dvss_pads\\[0\\].pad",
+
+    "bidir\\[6\\].pad",
+    "bidir\\[7\\].pad",
+    "inputs\\[0\\].pad",
+    "unused\\[0\\].pad",
+    "unused\\[1\\].pad",
+    "analog\\[0\\].pad",
+    "analog\\[1\\].pad",
+    "analog\\[2\\].pad"
+]
+
+PAD_EAST: [
+    "dvdd_pads\\[0\\].pad",
+    "dvss_pads\\[1\\].pad",
+
+    "unused\\[3\\].pad",
+    "unused\\[4\\].pad",
+    "unused\\[5\\].pad",
+    "unused\\[6\\].pad",
+    "unused\\[7\\].pad",
+    "unused\\[8\\].pad",
+    
+    "dvdd_pads\\[1\\].pad",
+    "dvss_pads\\[2\\].pad",
+
+    
+    "bidir\\[8\\].pad",
+    "bidir\\[9\\].pad",
+    "input\\[1\\].pad",
+    "input\\[2\\].pad",
+    "input\\[3\\].pad",
+    "bidir\\[10\\].pad",
+    
+    "dvss_pads\\[3\\].pad",
+    "dvdd_pads\\[2\\].pad",
+    "dvss_pads\\[4\\].pad",
+    "dvdd_pads\\[3\\].pad",
+]
+
+PAD_NORTH: [
+    "analog\\[3\\].pad",
+    "analog\\[4\\].pad",
+    "analog\\[5\\].pad",
+    "analog\\[6\\].pad",
+    "unused\\[9\\].pad",
+    "unused\\[10\\].pad",
+    "unused\\[11\\].pad",
+    "unused\\[12\\].pad",
+
+    "dvss_pads\\[5\\].pad",
+
+    "unused\\[13\\].pad",
+    "unused\\[14\\].pad",
+    "unused\\[15\\].pad",
+    "unused\\[15\\].pad",
+    "unused\\[16\\].pad",
+    rst_n3_pad,
+    clk3_pad,
+    clk3_b_pad
+]
+
+
+PAD_WEST: [
+    "dvdd_pads\\[7\\].pad",
+    "dvss_pads\\[9\\].pad",
+    "dvdd_pads\\[6\\].pad",
+    "dvss_pads\\[8\\].pad",
+
+    "unused\\[13\\].pad",
+    "unused\\[14\\].pad",
+    "unused\\[15\\].pad",
+    "unused\\[16\\].pad",
+    "unused\\[17\\].pad",
+    "unused\\[18\\].pad",
+
+    "dvdd_pads\\[5\\].pad",
+    "dvss_pads\\[7\\].pad",
+
+    "bidir\\[11\\].pad",
+    "inputs\\[4\\].pad",
+    "inputs\\[5\\].pad",
+    "inputs\\[6\\].pad",
+
+    "dvdd_pads\\[4\\].pad",
+    "dvss_pads\\[6\\].pad",
+    
+    clk1_pad,
+    rst_n1_pad
+]

@@ -54,11 +54,17 @@ librelane-magicdrc: ## Run LibreLane flow without KLayout DRC checks
 	librelane librelane/slots/slot_${SLOT}.yaml librelane/config.yaml --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk --skip KLayout.DRC
 .PHONY: librelane-magicdrc
 
+top-fast: ## Run LibreLane flow without DRC checks
+	librelane top_int/config.yaml --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk \
+	 --skip KLayout.DRC --skip Magic.DRC --skip OpenROAD.FillInsertion --skip Klayout.Filler --skip Klayout.Density \
+	 --skip KLayout.Xor --skip Checker.Xor
+.PHONY: top-fast
+
 librelane-fast: ## Run LibreLane flow without DRC checks
 	librelane librelane/config.yaml --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk \
 	 --skip KLayout.DRC --skip Magic.DRC --skip OpenROAD.FillInsertion --skip Klayout.Filler --skip Klayout.Density \
 	 --skip KLayout.Xor --skip Checker.Xor
-.PHONY: librelane-nodrc
+.PHONY: librelane-fast
 
 librelane-openroad: ## Open the last run in OpenROAD
 	librelane librelane/slots/slot_${SLOT}.yaml librelane/config.yaml --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk --last-run --flow OpenInOpenROAD

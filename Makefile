@@ -99,3 +99,7 @@ render-image: ## Render an image from the final layout (after copy-final)
 	mkdir -p img/
 	PDK_ROOT=${PDK_ROOT} PDK=${PDK} python3 scripts/lay2img.py final/gds/${TOP}.gds img/${TOP}.png --width 2048 --oversampling 4
 .PHONY: copy-final
+
+sealring:
+	PDK_ROOT=${PDK_ROOT} PDK=${PDK} python3 ${PDK_ROOT}/gf180mcuD/libs.tech/klayout/tech/scripts/sealring.py --input raw/ENGN2912E_top_final.gds --output $(MAKEFILE_DIR)/ENGN2912E_top_final_w_sealring.gds --die-width 3932 --die-height 5122
+.PHONY: sealring
